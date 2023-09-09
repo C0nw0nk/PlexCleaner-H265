@@ -2,6 +2,16 @@
 
 set search_limit=20
 
+:: Instead of just closing the window after our automated tasking we pause to view and check once your happy you can set this to 0
+:: 1 enabled
+:: 0 disabled
+set pause_window=1
+
+:: If you want this script to not exit once finished and after task complete / wait interval passed recheck plex folders in a loop
+:: 1 enabled
+:: 0 disabled
+set loop=1
+
 :: End Edit DO NOT TOUCH ANYTHING BELOW THIS POINT UNLESS YOU KNOW WHAT YOUR DOING!
 
 TITLE C0nw0nk - Directory Largest File first
@@ -10,6 +20,8 @@ echo Input the Directory or Path you want to correctly order for example C:\path
 set /p "plex_folder="
 
 set root_path="%~dp0"
+
+:start_of_script
 
 ::start powershell code
 echo $extensions = @("*.mkv", "*.mp4", "*.avi") >"%root_path:"=%%~n0.ps1"
@@ -37,6 +49,8 @@ for /f "delims=" %%i in ('Type "%root_path:"=%%~n0.txt"') do (
 )
 del "%root_path:"=%%~n0.txt"
 
-pause
+if %pause_window% == 1 pause
+
+if %loop% == 1 goto :start_of_script
 
 exit
