@@ -18,9 +18,14 @@ echo Get-ChildItem "%plex_folder:"=%" -Include $extensions -Recurse ^| sort -des
 powershell -ExecutionPolicy Unrestricted -File "%root_path:"=%%~n0.ps1" "%*" -Verb runAs
 del "%root_path:"=%%~n0.ps1"
 
+:: If plex cleaner not found then download and put it with script
+if not exist "%root_path:"=%win-x64\Tools\FfMpeg\bin\ffmpeg.exe" (
+	call "%root_path:"=%PlexCleaner_265.cmd" "" "0" "0" "0"
+)
+
 :: start /b /wait "%root_path:"=%PlexCleaner_265.cmd" "%plex_folder:"=%\%%i" "0" "0" "0"
 for /f "delims=" %%i in ('Type "%root_path:"=%%~n0.txt"') do (
-	echo "%plex_folder:"=%\%%i"
+	echo "%%i"
 	for /f %%b in ('%root_path:"=%win-x64\Tools\FfMpeg\bin\ffmpeg.exe -i "%%i" 2^>^&1 ^| find /c /i "Video: hevc "') do (
 		if [%%b]==[0] (
 			echo "%%i" is not hevc encoded
