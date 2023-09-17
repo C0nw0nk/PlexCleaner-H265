@@ -45,7 +45,7 @@ set wait_interval=%~3
 set looping=%~4
 :script_arguments_not_defined
 
-if %media_path:"=%=="" (
+if "%media_path:"=%"=="" (
 echo Please specify the destination for example C:\path\Movies OR \\NAS\FOLDER\Movies
 set /p "media_path="
 )
