@@ -10,7 +10,7 @@ set pause_window=1
 :: If you want this script to not exit once finished and after task complete / wait interval passed recheck plex folders in a loop
 :: 1 enabled
 :: 0 disabled
-set loop=1
+set loop=0
 
 :: End Edit DO NOT TOUCH ANYTHING BELOW THIS POINT UNLESS YOU KNOW WHAT YOUR DOING!
 
