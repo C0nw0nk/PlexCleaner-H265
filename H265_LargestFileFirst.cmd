@@ -1,6 +1,6 @@
 @echo off & setLocal EnableDelayedExpansion
 
-set search_limit=20
+set search_limit=999999
 
 :: Instead of just closing the window after our automated tasking we pause to view and check once your happy you can set this to 0
 :: 1 enabled
