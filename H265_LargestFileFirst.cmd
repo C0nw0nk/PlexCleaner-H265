@@ -14,7 +14,7 @@ set loop=0
 
 :: End Edit DO NOT TOUCH ANYTHING BELOW THIS POINT UNLESS YOU KNOW WHAT YOUR DOING!
 
-TITLE C0nw0nk - Directory Largest File first
+TITLE C0nw0nk - Directory Largest File first - 265
 
 echo Input the Directory or Path you want to correctly order for example C:\path or you can use \\NAS\STORAGE\PATH
 set /p "plex_folder="
@@ -24,7 +24,7 @@ set root_path="%~dp0"
 :start_of_script
 
 ::start powershell code
-echo $extensions = @("*.mkv", "*.mp4", "*.avi") >"%root_path:"=%%~n0.ps1"
+echo $extensions = @("*.mkv") >"%root_path:"=%%~n0.ps1"
 echo Get-ChildItem "%plex_folder:"=%" -Include $extensions -Recurse ^| sort -descending -property length ^| select -first %search_limit% name -ExpandProperty FullName ^| Out-File -FilePath "%root_path:"=%%~n0.txt" -NoClobber -Append >>"%root_path:"=%%~n0.ps1"
 ::end powershell code
 powershell -ExecutionPolicy Unrestricted -File "%root_path:"=%%~n0.ps1" "%*" -Verb runAs
