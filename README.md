@@ -7,6 +7,9 @@ This will check to see if media is already hevc encoded if it is it will skip th
 
 Run `H265_LargestFileFirst.cmd` and enjoy It will start with the largest video files in your library want to claim back that disk space as fast as we can after all :)
 
+# Optional
+
+`H265_Size.cmd` This script will only convert files larger than the set size `set max_file_size=2GB` in `plexcleaner.json` adjust the CRF quality factor to 27 - 30 to convert to decrease size each time you run this.
 
 # How to change settings
 
