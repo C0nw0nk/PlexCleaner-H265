@@ -4,7 +4,9 @@ set search_limit=2000000
 
 :: Files larger than this size will be converted until they are smaller than this size adjust CRF quality in plexcleaner.json
 :: A CRF quality range of 27 - 30 will be good to decrease size little by little
-set max_file_size=2GB
+set max_file_size=700mb
+
+set min_file_size=2.5gb
 
 :: Instead of just closing the window after our automated tasking we pause to view and check once your happy you can set this to 0
 :: 1 enabled
@@ -20,8 +22,6 @@ set loop=1
 
 TITLE C0nw0nk - Directory Largest File first based on file size
 
-echo If file size is greater than %max_file_size% then this script will convert until they are smaller
- 
 echo Input the Directory or Path you want to correctly order for example C:\path or you can use \\NAS\STORAGE\PATH
 set /p "plex_folder="
 
@@ -30,10 +30,11 @@ set root_path="%~dp0"
 :start_of_script
 
 del "%root_path:"=%%~n0.txt"
+del "%root_path:"=%%~n0.ps1"
 
 ::start powershell code
 echo $extensions = @("*.mkv") >"%root_path:"=%%~n0.ps1"
-echo Get-ChildItem "%plex_folder:"=%" -Include $extensions -Recurse ^| sort -descending -property length ^| Where {$_.Length -gt %max_file_size%} ^| select -first %search_limit% name -ExpandProperty FullName ^| Out-File -FilePath "%root_path:"=%%~n0.txt" -NoClobber -Append >>"%root_path:"=%%~n0.ps1"
+echo Get-ChildItem "%plex_folder:"=%" -Include $extensions -Recurse ^| sort -descending -property length ^| Where {$_.Length -gt %max_file_size%} ^| Where {$_.Length -lt %min_file_size%} ^| select -first %search_limit% name -ExpandProperty FullName ^| Out-File -FilePath "%root_path:"=%%~n0.txt" -NoClobber -Append >>"%root_path:"=%%~n0.ps1"
 ::end powershell code
 powershell -ExecutionPolicy Unrestricted -File "%root_path:"=%%~n0.ps1" "%*" -Verb runAs
 del "%root_path:"=%%~n0.ps1"
