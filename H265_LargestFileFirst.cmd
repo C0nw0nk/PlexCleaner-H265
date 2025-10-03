@@ -1,6 +1,13 @@
 @echo off & setLocal EnableDelayedExpansion
 
-set search_limit=999999
+set search_limit=2000000
+
+:: Directory to scan
+:: Path format can be Network share or Drive name
+:: example
+:: set media_path="C:\path\Movies"
+:: set media_path="\\NAS\FOLDER\Movies"
+set plex_folder=""
 
 :: Instead of just closing the window after our automated tasking we pause to view and check once your happy you can set this to 0
 :: 1 enabled
@@ -10,18 +17,34 @@ set pause_window=1
 :: If you want this script to not exit once finished and after task complete / wait interval passed recheck plex folders in a loop
 :: 1 enabled
 :: 0 disabled
-set loop=0
+set loop=1
 
 :: End Edit DO NOT TOUCH ANYTHING BELOW THIS POINT UNLESS YOU KNOW WHAT YOUR DOING!
 
 TITLE C0nw0nk - Directory Largest File first - 265
 
+:: Make script configurable via command line with arguements example
+:: "C:\path\PlexCleaner.cmd" "\\NAS\path" "pause_window" "wait_interval" "looping" 2^>nul
+:: Working example
+:: "C:\path\PlexCleaner.cmd" "\\NAS\path" "1" "120" "1" 2^>nul
+
+if "%~1"=="" goto :script_arguments_not_defined
+set plex_folder="%~1"
+set pause_window=%~2
+set loop=%~3
+:script_arguments_not_defined
+
+if "%plex_folder:"=%"=="" (
 echo Input the Directory or Path you want to correctly order for example C:\path or you can use \\NAS\STORAGE\PATH
 set /p "plex_folder="
+)
 
 set root_path="%~dp0"
 
 :start_of_script
+
+del "%root_path:"=%%~n0.txt"
+del "%root_path:"=%%~n0.ps1"
 
 ::start powershell code
 echo $extensions = @("*.mkv") >"%root_path:"=%%~n0.ps1"
@@ -53,4 +76,4 @@ if %pause_window% == 1 pause
 
 if %loop% == 1 goto :start_of_script
 
-exit
+exit /b
