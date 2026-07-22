@@ -59,15 +59,29 @@ if not exist "%root_path:"=%win-x64\Tools\FfMpeg\bin\ffmpeg.exe" (
 )
 
 :: start /b /wait "%root_path:"=%PlexCleaner_265.cmd" "%plex_folder:"=%\%%i" "0" "0" "0"
+set encoded=0
 for /f "delims=" %%i in ('Type "%root_path:"=%%~n0.txt"') do (
 	echo "%%i"
 	for /f %%b in ('%root_path:"=%win-x64\Tools\FfMpeg\bin\ffmpeg.exe -i "%%i" 2^>^&1 ^| find /c /i "Video: hevc "') do (
-		if [%%b]==[0] (
-			echo "%%i" is not hevc encoded
+		rem echo "%%b"
+		if [%%b]==[1] set encoded=1
+	for /f %%c in ('%root_path:"=%win-x64\Tools\FfMpeg\bin\ffmpeg.exe -i "%%i" 2^>^&1 ^| find /c /i "Video: av1 "') do (
+		rem echo "%%c"
+		if [%%c]==[1] set encoded=1
+	)
+		rem echo "!encoded!"
+		if [!encoded!]==[0] (
+			echo "%%i" is not hevc/av1 encoded
 			call "%root_path:"=%PlexCleaner_265.cmd" "%%i" "0" "0" "0"
 		) else (
-			echo "%%i" is hevc encoded
+			echo "%%i" is hevc/av1 encoded
 		)
+rem		if [%%b]==[0] (
+rem			echo "%%i" is not hevc encoded
+rem			call "%root_path:"=%PlexCleaner_265.cmd" "%%i" "0" "0" "0"
+rem		) else (
+rem			echo "%%i" is hevc encoded
+rem		)
 	)
 )
 del "%root_path:"=%%~n0.txt"
